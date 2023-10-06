@@ -1,0 +1,63 @@
+[gd_scene load_steps=11 format=3 uid="uid://bjytllyl5732t"]
+
+[ext_resource type="Script" path="res://scripts/PlayerMovement.gd" id="1_b0658"]
+[ext_resource type="Texture2D" uid="uid://kb5ad5yxagsw" path="res://textures/test_texture.png" id="1_wdsi2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_55fbn"]
+albedo_color = Color(0, 1, 0, 1)
+albedo_texture = ExtResource("1_wdsi2")
+uv1_scale = Vector3(16, 16, 16)
+
+[sub_resource type="QuadMesh" id="QuadMesh_ifwur"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_f5kx2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ocwyj"]
+albedo_color = Color(1, 0, 1, 1)
+albedo_texture = ExtResource("1_wdsi2")
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_pysj7"]
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_142o3"]
+albedo_color = Color(1, 0, 0.764706, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_fblu1"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_un6r2"]
+
+[node name="TestScene" type="Node3D"]
+
+[node name="Terrain" type="MeshInstance3D" parent="."]
+transform = Transform3D(32, 0, 0, 0, -1.39876e-06, 32, 0, -32, -1.39876e-06, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_55fbn")
+mesh = SubResource("QuadMesh_ifwur")
+
+[node name="RigidBody3D" type="RigidBody3D" parent="Terrain"]
+lock_rotation = true
+freeze = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/RigidBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.01, 0, 0, -0.005)
+shape = SubResource("BoxShape3D_f5kx2")
+
+[node name="PlayerDefault" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.67187, 0)
+script = ExtResource("1_b0658")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerDefault"]
+material_override = SubResource("StandardMaterial3D_ocwyj")
+mesh = SubResource("CapsuleMesh_pysj7")
+surface_material_override/0 = SubResource("StandardMaterial3D_142o3")
+
+[node name="RigidBody3D" type="RigidBody3D" parent="PlayerDefault/MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerDefault/MeshInstance3D/RigidBody3D"]
+shape = SubResource("CapsuleShape3D_fblu1")
+
+[node name="FrontIdicator" type="MeshInstance3D" parent="PlayerDefault"]
+transform = Transform3D(1, 0, 0, 0, 0.3, 0, 0, 0, 0.25, 0, 0.75, 0.5)
+mesh = SubResource("BoxMesh_un6r2")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.688279, 0.312953, 0.654472, -0.725446, 0.296919, 0.62094, 0, -0.902164, 0.431393, 0, 0, 0)

@@ -1,0 +1,8 @@
+[gd_resource type="PlaneMesh" load_steps=2 format=3 uid="uid://d1ftegj6q8reo"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_peyk0"]
+albedo_color = Color(0.266667, 0.639216, 0, 1)
+
+[resource]
+material = SubResource("StandardMaterial3D_peyk0")
+size = Vector2(32, 32)
