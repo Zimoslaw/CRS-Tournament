@@ -42,7 +42,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.01, 0, 0, -0.005)
 shape = SubResource("BoxShape3D_f5kx2")
 
 [node name="PlayerDefault" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.67187, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("1_b0658")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerDefault"]
