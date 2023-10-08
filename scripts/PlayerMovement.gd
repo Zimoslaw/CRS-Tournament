@@ -14,6 +14,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	doJump()
 	doRotation(delta)
 	doMovement(delta)
 	
@@ -28,14 +29,18 @@ func doRotation(delta: float):
 	if Input.is_action_just_pressed("MoveRight") && !isRotating:
 		isRotating = true
 		rotationDirection = -1
-		prevDegrees = rotation.y
+		prevDegrees = rotation_degrees.y
 	elif Input.is_action_just_pressed("MoveLeft") && !isRotating:
 		isRotating = true
 		rotationDirection = 1
-		prevDegrees = rotation.y
+		prevDegrees = rotation_degrees.y
 		
 	if isRotating:
-		rotate_object_local(Vector3(0, rotationDirection, 0), deg_to_rad(RotationSpeed * delta))
-		if rad_to_deg(abs(rotation.y - prevDegrees)) >= 90:
-			rotation.y = deg_to_rad(prevDegrees + (90 * rotationDirection))
+		rotation_degrees.y += rotationDirection * RotationSpeed * delta
+		if abs(rotation_degrees.y - prevDegrees) >= 90:
+			rotation_degrees.y = prevDegrees + (90 * rotationDirection)
 			isRotating = false
+
+func doJump(delta: float):
+	if Input.is_action_just_pressed("Jump"):
+		
