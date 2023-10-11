@@ -59,5 +59,11 @@ shape = SubResource("CapsuleShape3D_fblu1")
 transform = Transform3D(1, 0, 0, 0, 0.3, 0, 0, 0, 0.25, 0, 0.75, 0.5)
 mesh = SubResource("BoxMesh_un6r2")
 
+[node name="GroundCollider" type="RayCast3D" parent="PlayerDefault"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+target_position = Vector3(0, -0.2, 0)
+collide_with_areas = true
+collide_with_bodies = false
+
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.688279, 0.312953, 0.654472, -0.725446, 0.296919, 0.62094, 0, -0.902164, 0.431393, 0, 0, 0)
+transform = Transform3D(0.688279, 0.312953, 0.654472, -0.725446, 0.296919, 0.62094, 0, -0.902164, 0.431393, 0, 25, 0)

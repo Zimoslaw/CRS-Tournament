@@ -9,6 +9,7 @@ const jumpingLength: float = 2
 var rotationDirection: int = 0
 var prevDegrees: float = 0
 var deltaHeight: float = 0
+var deltaRotation: float = 0
 
 # States
 var isRotating: bool = false
@@ -26,30 +27,41 @@ func _process(delta):
 	doMovement(delta)
 	
 func doMovement(delta: float):
-	if Input.is_action_pressed("MoveForward"):
+	if isJumping:
+		return
+		
+	if Input.is_action_pressed("MoveForward"): # Move forward
 		translate(Vector3(0, 0, movementSpeed * delta))
 		
-	if Input.is_action_pressed("MoveBackwards"):
+	if Input.is_action_pressed("MoveBackwards"): # Move forward (2 x slower)
 		translate(Vector3(0, 0, (-movementSpeed * delta) /2))
 
 func doRotation(delta: float):
-	if Input.is_action_just_pressed("MoveRight") && !isRotating && !isJumping:
+	if isJumping:
+		return
+		
+	if Input.is_action_just_pressed("MoveRight") && !isRotating: # Turn right
 		isRotating = true
 		rotationDirection = -1
 		prevDegrees = rotation_degrees.y
-	elif Input.is_action_just_pressed("MoveLeft") && !isRotating && !isJumping:
+	elif Input.is_action_just_pressed("MoveLeft") && !isRotating: #Turn left
 		isRotating = true
 		rotationDirection = 1
 		prevDegrees = rotation_degrees.y
 		
 	if isRotating:
 		rotation_degrees.y += rotationDirection * rotationSpeed * delta
-		if abs(rotation_degrees.y - prevDegrees) >= 90:
+		deltaRotation += rotationDirection * rotationSpeed * delta
+		if abs(deltaRotation) > 85:
 			rotation_degrees.y = prevDegrees + (90 * rotationDirection)
+			deltaRotation = 0
 			isRotating = false
 
 func doJump(delta: float):
-	if Input.is_action_just_pressed("Jump") && !isJumping:
+	if isRotating:
+		return
+		
+	if Input.is_action_just_pressed("Jump") && !isJumping: # Jump
 		isJumping = true
 		
 	if isJumping:
@@ -58,3 +70,4 @@ func doJump(delta: float):
 		if deltaHeight >= (jumpingLength * PI):
 			isJumping = false
 			deltaHeight = 0
+			position.y = 1 #$GroundCollider.get_collider().getNode()
