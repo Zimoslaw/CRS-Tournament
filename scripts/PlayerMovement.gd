@@ -66,7 +66,7 @@ func doJump(delta: float):
 		
 	if isJumping:
 		deltaHeight += (jumpingSpeed * delta)
-		translate(Vector3(0, 0.2 * sin(deltaHeight), 0.314 * jumpingSpeed * delta))
+		translate(Vector3(0, 0.1 * sin(deltaHeight), 0.314 * jumpingSpeed * delta))
 		if deltaHeight >= (jumpingLength * PI):
 			isJumping = false
 			deltaHeight = 0
