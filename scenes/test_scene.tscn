@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bjytllyl5732t"]
+[gd_scene load_steps=12 format=3 uid="uid://bjytllyl5732t"]
 
 [ext_resource type="Texture2D" uid="uid://kb5ad5yxagsw" path="res://textures/test_texture.png" id="1_wdsi2"]
 [ext_resource type="Script" path="res://scripts/PlayerMovement.cs" id="2_yprcu"]
@@ -10,6 +10,9 @@ albedo_texture = ExtResource("1_wdsi2")
 uv1_scale = Vector3(16, 16, 16)
 
 [sub_resource type="QuadMesh" id="QuadMesh_ifwur"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hfutp"]
+albedo_color = Color(1, 0, 1, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ocwyj"]
 albedo_color = Color(1, 0, 1, 1)
@@ -39,6 +42,7 @@ mesh = SubResource("QuadMesh_ifwur")
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("2_yprcu")
+_debugMaterial = SubResource("StandardMaterial3D_hfutp")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerDefault"]
 material_override = SubResource("StandardMaterial3D_ocwyj")

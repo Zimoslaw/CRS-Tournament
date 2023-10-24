@@ -4,20 +4,30 @@ using System;
 public partial class PlayerMovement : Node3D
 {
     // Movement parameters
-    public float MovementSpeed = 5;
+    [Export]
+    public float MovementSpeed = 5; // meters/second
+    [Export]
+    private float JumpLength = 1; // multiplier
+    [Export]
+    private float JumpHeight = 0.25f; // multiplier
     private const float RotationSpeed = 360;
-    private const float JumpingSpeed = 10;
-    private const float JumpingLength = 2;
+    private const float JumpingSpeed = 5;
 
     // Movement helper variables
     private int _rotationDirection = 0;
     private float _prevDegrees = 0;
-    private float _deltaHeight = 0;
+    private float _deltaHeight = 1;
     private float _deltaRotation = 0;
 
     // States
     private bool _isRotating = false;
     private bool _isJumping = false;
+
+    // Debug
+    [Export]
+    private BaseMaterial3D _debugMaterial;
+    private SphereMesh _debugSphere;
+    private MeshInstance3D _debugNode;
 
     public override void _Ready()
     {
@@ -84,28 +94,40 @@ public partial class PlayerMovement : Node3D
             return;
 
         if (Input.IsActionJustPressed("Jump") && !_isJumping) // Jump
-		    _isJumping = true;
+            _isJumping = true;
 
         if (_isJumping)
         {
-            _deltaHeight += (JumpingSpeed * delta);
-            Translate(new Vector3(0, (float)0.1 * Mathf.Sin(_deltaHeight), (float)(0.314 * JumpingSpeed * delta)));
+            _deltaHeight -= JumpingSpeed * delta;
+            Translate(new Vector3(0, JumpHeight * JumpFunction(_deltaHeight), JumpLength * (float)(JumpingSpeed * delta)));
 
-            if (_deltaHeight >= (JumpingLength * Mathf.Pi))
+            if (_deltaHeight <= -0.9)
             {
                 _isJumping = false;
 
-                _deltaHeight = 0;
+                _deltaHeight = 1;
 
                 Position = new Vector3(Position.X, 1, Position.Z); //$GroundCollider.get_collider().getNode()
             }
 
-            AddChild(new MeshInstance3D());
+            _debugSphere = new SphereMesh
+            {
+                Radius = 0.05f,
+                Height = 0.1f,
+                RadialSegments = 6,
+                Rings = 6
+            };
+            _debugNode = new MeshInstance3D
+            {
+                Mesh = _debugSphere
+            };
+            _debugNode.Position = new Vector3(0, -1, 0) + Position;
+            GetParent().AddChild(_debugNode);
         }
     }
 
-    private float JumpFunction(float x)
+    static private float JumpFunction(float x)
     {
-        return 2 * x - Mathf.Pow(x, 2);
+        return (float)(0.65 * Mathf.Tan(x));
     }
 }
