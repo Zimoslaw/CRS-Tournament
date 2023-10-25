@@ -1,8 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://bjytllyl5732t"]
+[gd_scene load_steps=13 format=3 uid="uid://bjytllyl5732t"]
 
 [ext_resource type="Texture2D" uid="uid://kb5ad5yxagsw" path="res://textures/test_texture.png" id="1_wdsi2"]
 [ext_resource type="Script" path="res://scripts/PlayerMovement.cs" id="2_yprcu"]
 [ext_resource type="ArrayMesh" uid="uid://bme4pens6khuv" path="res://models/hedge.obj" id="3_0kmai"]
+[ext_resource type="SphereMesh" uid="uid://chtfujxiwg0af" path="res://models/debug_sphere.tres" id="3_lx357"]
+[ext_resource type="Script" path="res://scripts/Camera.cs" id="5_b2ios"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_55fbn"]
 albedo_color = Color(0.831373, 0.333333, 0, 1)
@@ -10,9 +12,6 @@ albedo_texture = ExtResource("1_wdsi2")
 uv1_scale = Vector3(16, 16, 16)
 
 [sub_resource type="QuadMesh" id="QuadMesh_ifwur"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hfutp"]
-albedo_color = Color(1, 0, 1, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ocwyj"]
 albedo_color = Color(1, 0, 1, 1)
@@ -42,7 +41,7 @@ mesh = SubResource("QuadMesh_ifwur")
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("2_yprcu")
-_debugMaterial = SubResource("StandardMaterial3D_hfutp")
+_debugSphere = ExtResource("3_lx357")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerDefault"]
 material_override = SubResource("StandardMaterial3D_ocwyj")
@@ -52,6 +51,18 @@ surface_material_override/0 = SubResource("StandardMaterial3D_142o3")
 [node name="FrontIdicator" type="MeshInstance3D" parent="PlayerDefault"]
 transform = Transform3D(1, 0, 0, 0, 0.3, 0, 0, 0, 0.25, 0, 0.75, 0.5)
 mesh = SubResource("BoxMesh_un6r2")
+
+[node name="CameraIndicator" type="Node3D" parent="PlayerDefault"]
+transform = Transform3D(-1, 7.57103e-08, -4.37114e-08, 0, 0.5, 0.866025, 8.74228e-08, 0.866025, -0.5, 0, 5, -3)
+rotation_edit_mode = 1
+
+[node name="Camera3D_default" type="Camera3D" parent="PlayerDefault" node_paths=PackedStringArray("Indicator")]
+transform = Transform3D(-1, 7.57103e-08, -4.37114e-08, 0, 0.5, 0.866025, 8.74228e-08, 0.866025, -0.5, 0, 5, -3)
+top_level = true
+near = 0.005
+far = 100.0
+script = ExtResource("5_b2ios")
+Indicator = NodePath("../CameraIndicator")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.688279, 0.312953, 0.654472, -0.725446, 0.296919, 0.62094, 0, -0.902164, 0.431393, 0, 25, 0)

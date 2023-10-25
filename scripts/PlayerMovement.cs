@@ -25,13 +25,9 @@ public partial class PlayerMovement : Node3D
 
     // Debug
     [Export]
-    private BaseMaterial3D _debugMaterial;
+    private bool _debug;
+    [Export]
     private SphereMesh _debugSphere;
-    private MeshInstance3D _debugNode;
-
-    public override void _Ready()
-    {
-    }
 
     public override void _Process(double delta)
     {
@@ -101,7 +97,7 @@ public partial class PlayerMovement : Node3D
             _deltaHeight -= JumpingSpeed * delta;
             Translate(new Vector3(0, JumpHeight * JumpFunction(_deltaHeight), JumpLength * (float)(JumpingSpeed * delta)));
 
-            if (_deltaHeight <= -0.9)
+            if (_deltaHeight <= -0.95)
             {
                 _isJumping = false;
 
@@ -110,19 +106,15 @@ public partial class PlayerMovement : Node3D
                 Position = new Vector3(Position.X, 1, Position.Z); //$GroundCollider.get_collider().getNode()
             }
 
-            _debugSphere = new SphereMesh
+            if (_debug)
             {
-                Radius = 0.05f,
-                Height = 0.1f,
-                RadialSegments = 6,
-                Rings = 6
-            };
-            _debugNode = new MeshInstance3D
-            {
-                Mesh = _debugSphere
-            };
-            _debugNode.Position = new Vector3(0, -1, 0) + Position;
-            GetParent().AddChild(_debugNode);
+                MeshInstance3D _debugNode = new()
+                {
+                    Mesh = _debugSphere,
+                    Position = new Vector3(0, -1, 0) + Position
+                };
+                GetParent().AddChild(_debugNode);
+            }
         }
     }
 

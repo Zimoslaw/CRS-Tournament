@@ -1,0 +1,14 @@
+[gd_resource type="SphereMesh" load_steps=3 format=3 uid="uid://chtfujxiwg0af"]
+
+[ext_resource type="Texture2D" uid="uid://kb5ad5yxagsw" path="res://textures/test_texture.png" id="1_koqb6"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b12ie"]
+albedo_texture = ExtResource("1_koqb6")
+uv1_scale = Vector3(8, 4, 1)
+
+[resource]
+material = SubResource("StandardMaterial3D_b12ie")
+radius = 0.05
+height = 0.1
+radial_segments = 6
+rings = 6
