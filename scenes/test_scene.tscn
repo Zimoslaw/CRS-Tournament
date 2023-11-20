@@ -9,7 +9,7 @@
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_55fbn"]
 albedo_color = Color(0.831373, 0.333333, 0, 1)
 albedo_texture = ExtResource("1_wdsi2")
-uv1_scale = Vector3(16, 16, 16)
+uv1_scale = Vector3(16.09, 16.09, 16.09)
 
 [sub_resource type="QuadMesh" id="QuadMesh_ifwur"]
 
@@ -38,7 +38,6 @@ material_override = SubResource("StandardMaterial3D_55fbn")
 mesh = SubResource("QuadMesh_ifwur")
 
 [node name="PlayerDefault" type="Node3D" parent="."]
-unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("2_yprcu")
 _debugSphere = ExtResource("3_lx357")
@@ -56,13 +55,14 @@ mesh = SubResource("BoxMesh_un6r2")
 transform = Transform3D(-1, 7.57103e-08, -4.37114e-08, 0, 0.5, 0.866025, 8.74228e-08, 0.866025, -0.5, 0, 5, -3)
 rotation_edit_mode = 1
 
-[node name="Camera3D_default" type="Camera3D" parent="PlayerDefault" node_paths=PackedStringArray("Indicator")]
+[node name="Camera3D_default" type="Camera3D" parent="PlayerDefault" node_paths=PackedStringArray("PositionIndicator", "QuaternionIndicator")]
 transform = Transform3D(-1, 7.57103e-08, -4.37114e-08, 0, 0.5, 0.866025, 8.74228e-08, 0.866025, -0.5, 0, 5, -3)
 top_level = true
 near = 0.005
 far = 100.0
 script = ExtResource("5_b2ios")
-Indicator = NodePath("../CameraIndicator")
+PositionIndicator = NodePath("../CameraIndicator")
+QuaternionIndicator = NodePath("..")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.688279, 0.312953, 0.654472, -0.725446, 0.296919, 0.62094, 0, -0.902164, 0.431393, 0, 25, 0)
