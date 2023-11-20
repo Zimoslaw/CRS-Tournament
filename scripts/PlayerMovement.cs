@@ -10,7 +10,7 @@ public partial class PlayerMovement : Node3D
 	private float JumpLength = 1; // multiplier
 	[Export]
 	private float JumpHeight = 0.25f; // multiplier
-	private const float RotationSpeed = 360;
+	private const float RotationSpeed = 10;
 	private const float JumpingSpeed = 5;
 
 	// Movement helper variables
@@ -18,6 +18,8 @@ public partial class PlayerMovement : Node3D
 	private float _prevDegrees = 0;
 	private float _deltaHeight = 1;
 	private float _deltaRotation = 0;
+	private Transform3D _targetTransform;
+	private Quaternion _targetQuaternion;
 
 	// States
 	private bool _isRotating = false;
@@ -64,27 +66,33 @@ public partial class PlayerMovement : Node3D
 			_isRotating = true;
 			_rotationDirection = -1;
 			_prevDegrees = RotationDegrees.Y;
+
+			_targetTransform = Transform;
+			_targetTransform = _targetTransform.Rotated(Vector3.Up, _rotationDirection * Mathf.Pi * 0.5f);
+			_targetQuaternion = _targetTransform.Basis.GetRotationQuaternion();
 		}
 		else if (Input.IsActionJustPressed("MoveLeft") && !_isRotating) //Turn left
 		{
 			_isRotating = true;
 			_rotationDirection = 1;
 			_prevDegrees = RotationDegrees.Y;
+
+			_targetTransform = Transform;
+			_targetTransform = _targetTransform.Rotated(Vector3.Up, _rotationDirection * Mathf.Pi * 0.5f);
+			_targetQuaternion = _targetTransform.Basis.GetRotationQuaternion();
 		}
 		if (_isRotating)
 		{
-			Transform3D transform = Transform;
+			var _originTransform = Transform;
+			var _originQuaternion = Transform.Basis.GetRotationQuaternion();
 
-			var origin = transform.Basis.GetQuaternion();
+			var finalRotation = _originQuaternion.Slerp(_targetQuaternion, RotationSpeed * delta);
 
-			var target = transform.Rotate(new Vector3(0, _rotationDirection * (float)Math.PI * 0.5f, 0));
+			_originTransform.Basis = new Basis(finalRotation);
+			Transform = _originTransform;
 
-			target = target.Basis.GetQuaternion();
-
-			var finalRotation = origin.Slerp(target, RotationSpeed * delta);
-
-			transform.Basis = new Basis(finalRotation);
-			Transform = transform;
+			if (finalRotation.Dot(_targetQuaternion) > 0.9)
+				_isRotating = false;
 
 			// RotationDegrees += new Vector3(0, _rotationDirection * RotationSpeed * delta, 0);
 			// _deltaRotation += _rotationDirection * RotationSpeed * delta;
